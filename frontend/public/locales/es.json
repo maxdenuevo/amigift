@@ -1,0 +1,35 @@
+{
+    "createGroup": {
+      "title": "Crear Grupo de Amigo Secreto",
+      "participants": "Participantes",
+      "addParticipant": "Agregar Participante",
+      "removeParticipant": "Eliminar Participante",
+      "namePlaceholder": "Nombre",
+      "emailPlaceholder": "Correo electrónico",
+      "minPrice": "Precio Mínimo",
+      "maxPrice": "Precio Máximo",
+      "currency": "Moneda",
+      "deadline": "Fecha Límite",
+      "createButton": "Crear Grupo",
+      "restrictions": "Restricciones de Participantes",
+      "manageRestrictions": "Gestionar Restricciones",
+      "unnamedParticipant": "Participante sin nombre",
+      "addRestriction": "Agregar restricción",
+      "removeRestriction": "Eliminar restricción",
+      "maxParticipantsReached": "Máximo 20 participantes permitidos",
+      "minTwoParticipants": "Mínimo 2 participantes requeridos",
+      "fillAllFields": "Por favor completa todos los campos de participantes"
+    },
+    "header": {
+      "toggleLanguage": "Cambiar Idioma",
+      "toggleTheme": "Cambiar Tema",
+      "createGroup": "Crear Grupo"
+    },
+    "common": {
+      "done": "Listo",
+      "cancel": "Cancelar",
+      "save": "Guardar",
+      "error": "Error",
+      "success": "Éxito"
+    }
+  }
