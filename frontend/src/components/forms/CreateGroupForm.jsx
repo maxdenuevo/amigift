@@ -2,107 +2,35 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { X, Plus, AlertCircle, Link as LinkIcon } from 'lucide-react';
 import { MatchingService } from '../utils/matching';
+import { useGroupData } from '../hooks/useGroupData';
+import { validateGroup } from '../utils/validation';
 
 const CreateGroupForm = () => {
-  const { t, i18n } = useTranslation();
-  
-  // Initialize state with two empty participants
-  const [participants, setParticipants] = useState([
-    { id: 1, name: '', email: '' },
-    { id: 2, name: '', email: '' }
-  ]);
-  const [restrictions, setRestrictions] = useState([]);
-  const [priceRange, setPriceRange] = useState({
-    min: '',
-    max: '',
-    currency: 'USD'
-  });
-  const [deadline, setDeadline] = useState('');
-  const [showRestrictionModal, setShowRestrictionModal] = useState(false);
+  const { createNewGroup, loading, error } = useGroupData();
+  const { t } = useTranslation();
 
-  // Add a new participant to the group
-  const addParticipant = () => {
-    if (participants.length >= 20) {
-      alert(t('createGroup.maxParticipantsReached'));
-      return;
-    }
-    const newId = Math.max(...participants.map(p => p.id)) + 1;
-    setParticipants([...participants, { id: newId, name: '', email: '' }]);
-  };
-
-  // Remove a participant and their associated restrictions
-  const removeParticipant = (id) => {
-    if (participants.length <= 2) {
-      alert(t('createGroup.minTwoParticipants'));
-      return;
-    }
-    setParticipants(participants.filter(p => p.id !== id));
-    setRestrictions(restrictions.filter(r => 
-      r.participant1 !== id && r.participant2 !== id
-    ));
-  };
-
-  // Update participant information
-  const updateParticipant = (id, field, value) => {
-    setParticipants(participants.map(p =>
-      p.id === id ? { ...p, [field]: value } : p
-    ));
-  };
-
-  // Check if two participants have a restriction
-  const hasRestriction = (id1, id2) => {
-    return restrictions.some(r => 
-      (r.participant1 === id1 && r.participant2 === id2) ||
-      (r.participant1 === id2 && r.participant2 === id1)
-    );
-  };
-
-  // Toggle restriction between two participants
-  const toggleRestriction = (participant1Id, participant2Id) => {
-    if (participant1Id === participant2Id) return;
-
-    const existingRestriction = restrictions.find(r =>
-      (r.participant1 === participant1Id && r.participant2 === participant2Id) ||
-      (r.participant1 === participant2Id && r.participant2 === participant1Id)
-    );
-
-    if (existingRestriction) {
-      setRestrictions(restrictions.filter(r => r !== existingRestriction));
-    } else {
-      setRestrictions([...restrictions, {
-        participant1: participant1Id,
-        participant2: participant2Id
-      }]);
-    }
-  };
-
-  // Get participant name, with fallback for unnamed participants
-  const getParticipantName = (id) => {
-    const participant = participants.find(p => p.id === id);
-    return participant ? participant.name || t('createGroup.unnamedParticipant') : '';
-  };
-
-  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     
+    // Create the group data object
+    const groupData = {
+      participants,
+      restrictions,
+      priceRange,
+      deadline
+    };
+
+    // Validate the data
+    const { isValid, errors } = validateGroup(groupData);
+    
+    if (!isValid) {
+      // Handle validation errors
+      const errorMessage = Object.values(errors).join('\n');
+      alert(errorMessage);
+      return;
+    }
+
     try {
-      // Validate participant information
-      const invalidParticipants = participants.filter(p => !p.name || !p.email);
-      if (invalidParticipants.length > 0) {
-        throw new Error(t('createGroup.fillAllFields'));
-      }
-
-      // Validate price range
-      if (!priceRange.min || !priceRange.max || Number(priceRange.max) <= Number(priceRange.min)) {
-        throw new Error(t('createGroup.invalidPriceRange'));
-      }
-
-      // Validate deadline
-      if (!deadline) {
-        throw new Error(t('createGroup.deadlineRequired'));
-      }
-
       // Generate matches using the MatchingService
       const matches = MatchingService.generateMatches(participants, restrictions);
       
@@ -111,31 +39,33 @@ const CreateGroupForm = () => {
         throw new Error(t('createGroup.matchingError'));
       }
 
-      // Prepare data for API submission
-      const groupData = {
-        participants: participants.map(({ id, name, email }) => ({
-          id,
-          name,
-          email,
-          assigned_to: matches.get(id)
-        })),
-        restrictions,
-        priceRange,
-        deadline,
-        language: i18n.language
+      // Add the matches to the group data
+      const groupWithMatches = {
+        ...groupData,
+        matches: Array.from(matches.entries()).map(([giver, receiver]) => ({
+          giver,
+          receiver
+        }))
       };
 
-      // TODO: Replace with actual API call
-      console.log('Submitting group data:', groupData);
+      // Create the group using the API
+      const createdGroup = await createNewGroup(groupWithMatches);
       
-      // Show success message
-      alert(t('createGroup.success'));
+      // Handle success (e.g., redirect to the group page)
+      navigate(`/group/${createdGroup.id}`);
       
-    } catch (error) {
-      console.error('Form submission error:', error);
-      alert(error.message || t('createGroup.generalError'));
+    } catch (err) {
+      // Handle errors (already managed by the hook)
+      console.error('Form submission error:', err);
+      alert(error || t('createGroup.generalError'));
     }
   };
+
+  // Add loading state handling
+  if (loading) {
+    return <div className="text-center">{t('common.loading')}</div>;
+  }
+;
 
   return (
     <form onSubmit={handleSubmit} className="max-w-4xl mx-auto p-6 space-y-8">
