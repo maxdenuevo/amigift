@@ -18,7 +18,12 @@
       "removeRestriction": "Eliminar restricción",
       "maxParticipantsReached": "Máximo 20 participantes permitidos",
       "minTwoParticipants": "Mínimo 2 participantes requeridos",
-      "fillAllFields": "Por favor completa todos los campos de participantes"
+      "fillAllFields": "Por favor completa todos los campos de participantes",
+      "matchingError": "No se pudieron generar emparejamientos válidos con las restricciones dadas. Por favor, revise las restricciones de participantes.",
+      "matchingSuccess": "¡Los emparejamientos de Amigo Secreto se han generado exitosamente!",
+      "generalError": "Ocurrió un error al crear el grupo. Por favor, intente nuevamente.",
+      "processingMatches": "Generando emparejamientos de Amigo Secreto..."
+  
     },
     "header": {
       "toggleLanguage": "Cambiar Idioma",

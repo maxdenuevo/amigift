@@ -39,3 +39,9 @@
 .container {
   @apply px-4 mx-auto max-w-7xl sm:px-6 lg:px-8;
 }
+
+@layer utilities {
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-blue-500;
+  }
+}

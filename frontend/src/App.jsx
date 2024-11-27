@@ -1,13 +1,16 @@
 import { RouterProvider } from 'react-router-dom';
 import { ThemeProvider } from './context/ThemeContext';
+import { LanguageProvider } from './context/LanguageContext';
 import { router } from './router';
 import './utils/i18n';
-import './styles/index.css';
+import './styles/tailwind.css';
 
 export default function App() {
   return (
     <ThemeProvider>
-      <RouterProvider router={router} />
+      <LanguageProvider>
+        <RouterProvider router={router} />
+      </LanguageProvider>
     </ThemeProvider>
   );
 }

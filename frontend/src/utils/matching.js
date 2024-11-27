@@ -1,4 +1,38 @@
 // src/utils/matching.js
+
+export const generateMatches = (participants, restrictions) => {
+  const matches = new Map();
+  const available = new Set(participants.map(p => p.id));
+
+  // Helper function to check if a match is valid
+  const isValidMatch = (giver, receiver) => {
+    if (giver === receiver) return false;
+    if (!available.has(receiver)) return false;
+    return !restrictions.some(r => 
+      (r.participant1 === giver && r.participant2 === receiver) ||
+      (r.participant1 === receiver && r.participant2 === giver)
+    );
+  };
+
+  // Try to find valid matches for each participant
+  for (const giver of participants) {
+    const validReceivers = Array.from(available).filter(r => isValidMatch(giver.id, r));
+    
+    if (validReceivers.length === 0) {
+      // No valid match found, need to backtrack
+      return null;
+    }
+
+    // Randomly select a valid receiver
+    const receiverIndex = Math.floor(Math.random() * validReceivers.length);
+    const receiver = validReceivers[receiverIndex];
+    
+    matches.set(giver.id, receiver);
+    available.delete(receiver);
+  }
+
+  return matches;
+};
 export class MatchingService {
     /**
      * Generates Secret Santa assignments while respecting restrictions
