@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useParticipant } from '../hooks/useParticipant';
 import { Gift, AlertCircle, Send, Plus, X, DollarSign, Calendar } from 'lucide-react';
-import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Alert, AlertDescription } from "../components/ui/alert";
 
 export default function ParticipantView() {
   const { participantId } = useParams();
