@@ -1,0 +1,89 @@
+{
+  "home": {
+    "hero": {
+      "subtitle": "Amigo Secreto moderno para amigos y familia",
+      "createButton": "Crear Nuevo Grupo"
+    },
+    "features": {
+      "title": "Características",
+      "secret": {
+        "title": "Coincidencias Secretas",
+        "description": "Sistema automático y justo de emparejamiento"
+      },
+      "groups": {
+        "title": "Gestión de Grupos",
+        "description": "Organiza hasta 20 participantes fácilmente"
+      },
+      "restrictions": {
+        "title": "Restricciones Personalizadas",
+        "description": "Establece reglas de emparejamiento para parejas y familias"
+      },
+      "bilingual": {
+        "title": "Soporte Bilingüe",
+        "description": "Soporte completo en inglés y español"
+      }
+    },
+    "howItWorks": {
+      "title": "Cómo Funciona",
+      "step1": {
+        "title": "Crea un Grupo",
+        "description": "Añade participantes y configura tus preferencias"
+      },
+      "step2": {
+        "title": "Comparte el Enlace",
+        "description": "Cada participante recibe un enlace único"
+      },
+      "step3": {
+        "title": "Intercambio de Regalos",
+        "description": "Reúnanse y celebren juntos"
+      }
+    }
+  },
+  "createGroup": {
+    "title": "Crear Nuevo Grupo",
+    "namePlaceholder": "Nombre del Participante",
+    "emailPlaceholder": "Correo Electrónico",
+    "addParticipant": "Añadir Participante",
+    "removeParticipant": "Eliminar",
+    "minTwoParticipants": "Se requieren al menos dos participantes",
+    "maxParticipantsReached": "Número máximo de participantes alcanzado",
+    "unnamedParticipant": "Participante Sin Nombre",
+    "minPrice": "Precio Mínimo",
+    "maxPrice": "Precio Máximo",
+    "currency": "Moneda",
+    "deadline": "Fecha del Evento",
+    "restrictions": "Restricciones de Emparejamiento",
+    "manageRestrictions": "Gestionar Restricciones"
+  },
+  "participantView": {
+    "yourMatch": "Tu Amigo Secreto",
+    "buyingGiftFor": "Comprarás un regalo para:",
+    "eventDetails": "Detalles del Evento",
+    "eventDate": "Fecha del Evento",
+    "priceRange": "Rango de Precio",
+    "matchWishlist": "Lista de Deseos de tu Amigo",
+    "yourWishlist": "Tu Lista de Deseos",
+    "wishlistPlaceholder": "Añade una idea de regalo...",
+    "addItem": "Añadir",
+    "emptyWishlist": "Tu lista de deseos está vacía. ¡Añade algunas ideas de regalo!"
+  },
+  "groupDashboard": {
+    "title": "Panel del Grupo",
+    "participants": "Participantes",
+    "daysRemaining": "días restantes",
+    "priceRange": {
+      "title": "Votación de Rango de Precio"
+    },
+    "wishlistSubmitted": "Lista Añadida",
+    "wishlistPending": "Pendiente",
+    "eventDetails": {
+      "title": "Detalles del Evento",
+      "when": "Cuándo",
+      "priceRange": "Rango de Precio"
+    }
+  },
+  "common": {
+    "locale": "es-ES",
+    "done": "Listo"
+  }
+}

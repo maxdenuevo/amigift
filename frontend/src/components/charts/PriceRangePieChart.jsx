@@ -2,11 +2,27 @@ import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { PieChart, Pie, Cell, Legend, Tooltip, ResponsiveContainer } from 'recharts';
 
+const COLORS = ['#8b5cf6', '#6366f1', '#ec4899', '#f43f5e', '#f59e0b'];
+
+const CustomTooltip = ({ active, payload }) => {
+  if (active && payload && payload.length) {
+    const data = payload[0].payload;
+    return (
+      <div className="bg-white dark:bg-gray-800 p-3 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700">
+        <p className="text-sm text-gray-600 dark:text-gray-300">
+          {data.name}
+        </p>
+        <p className="text-sm font-semibold text-gray-900 dark:text-white">
+          {`${data.value.toFixed(1)}% (${data.count} ${data.votes})`}
+        </p>
+      </div>
+    );
+  }
+  return null;
+};
+
 const PriceRangePieChart = ({ votes }) => {
   const { t } = useTranslation();
-
-  // Colors for different price ranges
-  const COLORS = ['#8b5cf6', '#6366f1', '#ec4899', '#f43f5e', '#f59e0b'];
 
   // Process votes data for the chart
   const chartData = useMemo(() => {
@@ -15,27 +31,10 @@ const PriceRangePieChart = ({ votes }) => {
     return votes.map(range => ({
       name: `${range.min} - ${range.max} ${range.currency}`,
       value: (range.count / totalVotes) * 100,
-      count: range.count
+      count: range.count,
+      votes: t('priceRange.votes')
     }));
-  }, [votes]);
-
-  // Custom tooltip component
-  const CustomTooltip = ({ active, payload }) => {
-    if (active && payload && payload.length) {
-      const data = payload[0].payload;
-      return (
-        <div className="bg-white dark:bg-gray-800 p-3 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700">
-          <p className="text-sm text-gray-600 dark:text-gray-300">
-            {data.name}
-          </p>
-          <p className="text-sm font-semibold text-gray-900 dark:text-white">
-            {`${data.value.toFixed(1)}% (${data.count} ${t('priceRange.votes')})`}
-          </p>
-        </div>
-      );
-    }
-    return null;
-  };
+  }, [votes, t]);
 
   return (
     <div className="w-full h-80">

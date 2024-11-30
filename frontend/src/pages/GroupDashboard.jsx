@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useGroupData } from '../hooks/useGroupData';
-import { PriceRangePieChart } from '../components/charts/PriceRangePieChart';
+import PriceRangePieChart from '../components/charts/PriceRangePieChart';
 import { Calendar, Users, Clock, AlertCircle } from 'lucide-react';
 
 export default function GroupDashboard() {

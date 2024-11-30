@@ -1,163 +1,92 @@
-// src/utils/matching.js
+class MatchingService {
+  /**
+   * Generates valid matches for Secret Santa participants respecting restrictions
+   * @param {Array} participants - Array of participant objects
+   * @param {Array} restrictions - Array of restriction objects
+   * @returns {Map} Map of participant IDs to their assigned match IDs
+   */
+  static generateMatches(participants, restrictions) {
+    const participantIds = participants.map(p => p.id);
+    let attempts = 0;
+    const maxAttempts = 100;
 
-export const generateMatches = (participants, restrictions) => {
-  const matches = new Map();
-  const available = new Set(participants.map(p => p.id));
+    while (attempts < maxAttempts) {
+      const matches = new Map();
+      const available = [...participantIds];
+      let valid = true;
 
-  // Helper function to check if a match is valid
-  const isValidMatch = (giver, receiver) => {
-    if (giver === receiver) return false;
-    if (!available.has(receiver)) return false;
-    return !restrictions.some(r => 
-      (r.participant1 === giver && r.participant2 === receiver) ||
-      (r.participant1 === receiver && r.participant2 === giver)
+      // Shuffle available participants
+      for (let i = available.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [available[i], available[j]] = [available[j], available[i]];
+      }
+
+      // Attempt to assign matches
+      for (const participant of participantIds) {
+        const validMatches = available.filter(match => 
+          participant !== match && 
+          !this.hasRestriction(participant, match, restrictions)
+        );
+
+        if (validMatches.length === 0) {
+          valid = false;
+          break;
+        }
+
+        const matchIndex = Math.floor(Math.random() * validMatches.length);
+        const match = validMatches[matchIndex];
+        matches.set(participant, match);
+        available.splice(available.indexOf(match), 1);
+      }
+
+      if (valid) {
+        return matches;
+      }
+
+      attempts++;
+    }
+
+    throw new Error('Unable to generate valid matches after maximum attempts');
+  }
+
+  /**
+   * Checks if there's a restriction between two participants
+   */
+  static hasRestriction(participant1, participant2, restrictions) {
+    return restrictions.some(r =>
+      (r.participant1 === participant1 && r.participant2 === participant2) ||
+      (r.participant1 === participant2 && r.participant2 === participant1)
     );
-  };
-
-  // Try to find valid matches for each participant
-  for (const giver of participants) {
-    const validReceivers = Array.from(available).filter(r => isValidMatch(giver.id, r));
-    
-    if (validReceivers.length === 0) {
-      // No valid match found, need to backtrack
-      return null;
-    }
-
-    // Randomly select a valid receiver
-    const receiverIndex = Math.floor(Math.random() * validReceivers.length);
-    const receiver = validReceivers[receiverIndex];
-    
-    matches.set(giver.id, receiver);
-    available.delete(receiver);
   }
 
-  return matches;
-};
-export class MatchingService {
-    /**
-     * Generates Secret Santa assignments while respecting restrictions
-     * Uses a modified version of the Fisher-Yates shuffle with backtracking
-     * @param {Array} participants - Array of participant objects
-     * @param {Array} restrictions - Array of restriction objects
-     * @returns {Object} - Map of giver ID to receiver ID
-     */
-    static generateMatches(participants, restrictions) {
-      // Convert participants to array of IDs
-      const participantIds = participants.map(p => p.id);
-      
-      // Create adjacency matrix for valid matches
-      const validMatches = this.createValidMatchesMatrix(participantIds, restrictions);
-      
-      // Try to find a valid matching
-      let attempts = 0;
-      const maxAttempts = 100; // Prevent infinite loops
-      
-      while (attempts < maxAttempts) {
-        try {
-          const matching = this.attemptMatching(participantIds, validMatches);
-          return matching;
-        } catch (error) {
-          attempts++;
-          // If we've tried too many times, throw an error
-          if (attempts === maxAttempts) {
-            throw new Error('Unable to generate valid matching with given restrictions');
-          }
-        }
-      }
+  /**
+   * Validates a matching solution
+   */
+  static validateMatching(matches, participants, restrictions) {
+    const participantIds = new Set(participants.map(p => p.id));
+    const assigned = new Set();
+
+    // Check that all participants are matched
+    if (matches.size !== participants.length) return false;
+
+    // Validate each match
+    for (const [giver, receiver] of matches) {
+      // Check that both participants exist
+      if (!participantIds.has(giver) || !participantIds.has(receiver)) return false;
+
+      // Check for self-assignment
+      if (giver === receiver) return false;
+
+      // Check for restrictions
+      if (this.hasRestriction(giver, receiver, restrictions)) return false;
+
+      // Check for duplicate receivers
+      if (assigned.has(receiver)) return false;
+      assigned.add(receiver);
     }
-  
-    /**
-     * Creates a matrix of valid matches considering restrictions
-     */
-    static createValidMatchesMatrix(participantIds, restrictions) {
-      const n = participantIds.length;
-      const matrix = Array(n).fill().map(() => Array(n).fill(true));
-      
-      // No self-matches
-      for (let i = 0; i < n; i++) {
-        matrix[i][i] = false;
-      }
-      
-      // Apply restrictions
-      restrictions.forEach(restriction => {
-        const i = participantIds.indexOf(restriction.participant1);
-        const j = participantIds.indexOf(restriction.participant2);
-        if (i !== -1 && j !== -1) {
-          matrix[i][j] = false;
-          matrix[j][i] = false;
-        }
-      });
-      
-      return matrix;
-    }
-  
-    /**
-     * Attempts to create a valid matching using a modified Fisher-Yates shuffle
-     */
-    static attemptMatching(participantIds, validMatches) {
-      const n = participantIds.length;
-      const assigned = new Set();
-      const matching = new Map();
-      
-      // Create array of available receivers for each giver
-      const available = participantIds.map((_, i) => 
-        participantIds.filter((_, j) => validMatches[i][j])
-      );
-      
-      // For each giver, try to find a valid receiver
-      for (let giverIndex = 0; giverIndex < n; giverIndex++) {
-        const giver = participantIds[giverIndex];
-        const possibleReceivers = available[giverIndex].filter(r => !assigned.has(r));
-        
-        if (possibleReceivers.length === 0) {
-          throw new Error('No valid receiver found');
-        }
-        
-        // Randomly select a receiver from available options
-        const receiverIndex = Math.floor(Math.random() * possibleReceivers.length);
-        const receiver = possibleReceivers[receiverIndex];
-        
-        matching.set(giver, receiver);
-        assigned.add(receiver);
-      }
-      
-      return matching;
-    }
-  
-    /**
-     * Validates that a matching is valid
-     */
-    static validateMatching(matching, participants, restrictions) {
-      const participantIds = participants.map(p => p.id);
-      const assigned = new Set();
-      
-      // Check that each person gives and receives exactly once
-      for (const [giver, receiver] of matching.entries()) {
-        // Check that giver and receiver are valid participants
-        if (!participantIds.includes(giver) || !participantIds.includes(receiver)) {
-          return false;
-        }
-        
-        // Check that no one gives to themselves
-        if (giver === receiver) {
-          return false;
-        }
-        
-        // Check that no one receives multiple gifts
-        if (assigned.has(receiver)) {
-          return false;
-        }
-        assigned.add(receiver);
-        
-        // Check that no restrictions are violated
-        for (const restriction of restrictions) {
-          if ((restriction.participant1 === giver && restriction.participant2 === receiver) ||
-              (restriction.participant2 === giver && restriction.participant1 === receiver)) {
-            return false;
-          }
-        }
-      }
-      
-      return true;
-    }
+
+    return true;
   }
+}
+
+export { MatchingService };
