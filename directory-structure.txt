@@ -58,20 +58,16 @@
 ├── docs
 │   ├── API.md
 │   ├── CONTRIBUTING.md
-│   ├── DEPLOYMENT.md
-│   └── README.md
+│   └── DEPLOYMENT.md
 └── frontend
     ├── README.md
     ├── eslint.config.js
     ├── index.html
     ├── package-lock.json
     ├── package.json
+    ├── postcss.config.js
     ├── public
-    │   ├── assets
-    │   ├── locales
-    │   │   ├── en.json
-    │   │   └── es.json
-    │   └── vite.svg
+    │   └── assets
     ├── src
     │   ├── App.jsx
     │   ├── api
@@ -79,7 +75,8 @@
     │   ├── components
     │   │   ├── charts
     │   │   ├── forms
-    │   │   └── layout
+    │   │   ├── layout
+    │   │   └── ui
     │   ├── context
     │   │   ├── LanguageContext.jsx
     │   │   └── ThemeContext.jsx
@@ -87,7 +84,10 @@
     │   │   ├── useGroupData.js
     │   │   └── useParticipant.js
     │   ├── i18n
-    │   │   └── config.js
+    │   │   ├── config.js
+    │   │   └── locales
+    │   ├── lib
+    │   │   └── utils.js
     │   ├── main.jsx
     │   ├── pages
     │   │   ├── CreateGroup.jsx
@@ -104,4 +104,4 @@
     ├── tailwind.config.js
     └── vite.config.js
 
-31 directories, 74 files
+33 directories, 72 files
