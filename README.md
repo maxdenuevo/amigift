@@ -1,4 +1,4 @@
-# <img src="https://skillicons.dev/icons?i=react" height="40" alt="react logo"  /> Secrete - Bilingual Secret Santa App
+# <img src="https://skillicons.dev/icons?i=react" height="40" alt="react logo"  /> Amigift - Bilingual Secret Santa App
 
 Modern, bilingual Secret Santa web application built with React (Vite) and Flask.
 
@@ -34,7 +34,7 @@ Modern, bilingual Secret Santa web application built with React (Vite) and Flask
 ## Project Structure
 
 ```
-secrete/
+amigift/
 ├── frontend/
 │   ├── index.html
 │   ├── vite.config.js

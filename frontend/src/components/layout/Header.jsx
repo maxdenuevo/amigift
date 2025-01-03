@@ -16,7 +16,7 @@ const Header = () => {
           {/* Logo and brand name */}
           <Link to="/" className="flex items-center space-x-2">
             <span className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-blue-500 bg-clip-text text-transparent">
-              Secrete
+              Amigift
             </span>
           </Link>
 

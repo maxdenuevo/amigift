@@ -4,7 +4,7 @@ import { initReactI18next } from 'react-i18next';
 const resources = {
   en: {
     common: {
-      welcome: 'Welcome to Secrete',
+      welcome: 'Welcome to Amigift',
       secretSanta: 'Secret Santa',
       createGroup: 'Create Group',
       participants: 'Participants',
@@ -13,7 +13,7 @@ const resources = {
   },
   es: {
     common: {
-      welcome: 'Bienvenido a Secrete',
+      welcome: 'Bienvenido a Amigift',
       secretSanta: 'Amigo Secreto',
       createGroup: 'Crear Grupo',
       participants: 'Participantes',

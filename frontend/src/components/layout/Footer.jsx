@@ -32,7 +32,7 @@ const Footer = () => {
             <ul className="space-y-2">
               <li>
                 <a
-                  href="https://github.com/yourusername/secrete"
+                  href="https://github.com/maxdenuevo/amigift"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center space-x-2 text-gray-600 dark:text-gray-400 hover:text-purple-600 dark:hover:text-purple-400"
@@ -43,7 +43,7 @@ const Footer = () => {
               </li>
               <li>
                 <a
-                  href="mailto:contact@secrete.cl"
+                  href="mailto:max@amigift.com"
                   className="flex items-center space-x-2 text-gray-600 dark:text-gray-400 hover:text-purple-600 dark:hover:text-purple-400"
                 >
                   <Mail className="w-4 h-4" />
@@ -78,7 +78,7 @@ const Footer = () => {
         {/* Copyright */}
         <div className="mt-8 pt-8 border-t border-gray-200 dark:border-gray-800">
           <p className="text-center text-sm text-gray-500 dark:text-gray-400">
-            © {currentYear} Secrete. {t('footer.copyright')}
+            © {currentYear} Amigift. {t('footer.copyright')}
           </p>
         </div>
       </div>

@@ -37,7 +37,7 @@ export default function Home() {
       <section className="pt-20 pb-16 px-4">
         <div className="max-w-7xl mx-auto text-center">
           <h1 className="text-4xl md:text-6xl font-bold mb-6">
-            <span className="text-gradient">Secrete</span>
+            <span className="text-gradient">Amigift</span>
           </h1>
           <p className="text-xl md:text-2xl text-gray-600 dark:text-gray-300 mb-8 max-w-2xl mx-auto">
             {t('home.hero.subtitle')}
